@@ -1,3 +1,24 @@
+# 2011Scape Drop Table Maker
+
+![1687034282183](image/README/1687034282183.png)
+
+Drop Table Maker is a Python application that allows you to create drop tables for game development in 2011Scape. It provides a user-friendly interface for defining item drops and their probabilities.
+
+## Features
+
+- Add and remove items with customizable drop probabilities to the drop table.
+- Specify guaranteed drops for certain items.
+- Generate Kotlin script code based on the defined drop table.
+- Save the generated code to a file.
+
+## Installation
+
+1. Make sure you have Python 3 installed on your system.
+2. Clone this repository:
+
+   ```bash
+   git clone https://github.com/HarleyGilpin/droptablemaker.git
+   ```
 
 # Setting up the environment
 
