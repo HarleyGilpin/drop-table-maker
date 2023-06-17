@@ -17,7 +17,7 @@ Drop Table Maker is a Python application that allows you to create drop tables f
 2. Clone this repository:
 
    ```bash
-   git clone https://github.com/HarleyGilpin/droptablemaker.git
+   git clone https://github.com/HarleyGilpin/drop-table-maker.git
    ```
 
 # Setting up the environment
