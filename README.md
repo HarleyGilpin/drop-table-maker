@@ -50,3 +50,15 @@ deactivate
 ```
 
 This will restore the original environment and remove the virtual environment from the current terminal session.
+
+
+# Building the Executable
+
+Follow these steps to build your Python application into an executable:
+
+1. Open a terminal or command prompt.
+2. Navigate to the directory containing your Python application files.
+3. Verify that the "Item_list.txt" file is present in the same directory as the "main.py" file. If the file is located elsewhere, adjust the file path accordingly in the command.
+1. Run the following command to build the executable: `pyinstaller -w -F --add-data="Item_list.txt;." main.py`
+
+   This command uses PyInstaller to create a single executable file (`-F`) that is launched as a Windows application without a console window (`-w`). The `--add-data` option includes the "Item_list.txt" file by specifying its filename and destination directory (`.` represents the current directory).
