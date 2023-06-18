@@ -8,10 +8,10 @@ class Application(ttk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
         self.master = master
-        self.master.title("Drop Table Maker Version 0.1a by Pixel")
+        self.master.title("2011Scape - Drop Table Maker by Pixel [Version 1.0]")
 
         # Create a canvas within the root window
-        self.canvas = tk.Canvas(root, width=700, bg='#121212', highlightthickness=0)
+        self.canvas = tk.Canvas(root, height=474, width=711, bg='#999999', highlightthickness=0)
         self.canvas.grid(row=0, column=0)
 
         # Create a vertical scrollbar and associate it with the canvas
@@ -33,17 +33,17 @@ class Application(ttk.Frame):
             self.add_item_row()
 
     def create_widgets(self):
-        ttk.Label(self, text="Total slots").grid(row=0, column=0)
-        self.total_slots = tk.StringVar(self)
-        self.total_slots.set("256")  # default value
-        self.total_slots_menu = ttk.OptionMenu(self, self.total_slots, "256", "1", "8", "32", "128", "256", "512", "1024", "2048", "4096", "10240")
-        self.total_slots_menu.grid(row=0, column=1)
+            ttk.Label(self, text="Total slots").grid(row=0, column=0)
 
-        self.add_item = ttk.Button(self, text="ADD ITEM", command=self.add_item_row)
-        self.add_item.grid(row=0, column=2)
+            self.total_slots = ttk.Combobox(self, values=["256", "1", "8", "32", "128", "256", "512", "1024", "2048", "4096", "10240"])
+            self.total_slots.set("256")  # default value
+            self.total_slots.grid(row=0, column=1)
 
-        self.generate = ttk.Button(self, text="GENERATE", command=self.generate_code)
-        self.generate.grid(row=0, column=3)
+            self.add_item = ttk.Button(self, text="Add Item", command=self.add_item_row)
+            self.add_item.grid(row=0, column=2)
+
+            self.generate = ttk.Button(self, text="Generate", command=self.generate_code)
+            self.generate.grid(row=0, column=3)
 
     def add_item_row(self):
         row_num = len(self.items) + 1
@@ -60,21 +60,27 @@ class Application(ttk.Frame):
         quantity_entry.insert(0, "1")  # Set the default value
         quantity_entry.grid(row=row_num, column=3)
 
-        probability_entry = ttk.Entry(frame)
-        probability_entry.insert(0, "1/28")  # Set the default value
-        guaranteed = IntVar()
-        chk = ttk.Checkbutton(frame, text="Guaranteed drop", variable=guaranteed)
-        chk.grid(row=row_num, column=4)
-        
-        if not guaranteed.get():
-            ttk.Label(frame, text="Probability").grid(row=row_num, column=5)
-            probability_entry.grid(row=row_num, column=6)
+        # Set style for combobox
+        style = ttk.Style()
+        style.map('TCombobox', fieldbackground=[('readonly', '#333333')])  # set the dropdown color
+        style.map('TCombobox', selectbackground=[('readonly', 'white')])  # set the selected item background color
+        style.map('TCombobox', selectforeground=[('readonly', 'black')])  # set the selected item text color
 
-        remove_button = ttk.Button(frame, text="x", command=lambda: self.remove_item((name_entry, quantity_entry, probability_entry, guaranteed, frame)))
-        remove_button.grid(row=row_num, column=7)
+        probability_entry = ttk.Combobox(frame, values=["1/8", "1/32", "1/128", "1/256", "1/512", "1/5000", "1/10000"], style='TCombobox')
+        probability_entry.set("1/28")  # Set the default value
+        guaranteed = IntVar()
+        chk = ttk.Checkbutton(frame, variable=guaranteed)
+        ttk.Label(frame, text="Guaranteed Drop").grid(row=row_num, column=6)
+        chk.grid(row=row_num, column=7)
+
+        if not guaranteed.get():
+            ttk.Label(frame, text="Probability").grid(row=row_num, column=4)
+            probability_entry.grid(row=row_num, column=5)
+
+        remove_button = ttk.Button(frame, text=" x ", width=2, command=lambda: self.remove_item((name_entry, quantity_entry, probability_entry, guaranteed, frame)))
+        remove_button.grid(row=row_num, column=8)
 
         self.items.append((name_entry, quantity_entry, probability_entry, guaranteed, frame))
-
 
     def remove_item(self, item):
         self.items.remove(item)
@@ -126,9 +132,11 @@ class Application(ttk.Frame):
         f.write(code)
         f.close()
 
-root = ThemedTk(theme="black") 
-root.geometry("725x288")  # Set the window size
-root.resizable(False, True)  # Prevent resizing of the window
+root = ThemedTk(theme="elegant") 
+root.geometry("729x500")  # Set the window size
+root.resizable(False, False)  # Prevent resizing of the window
 root.attributes('-fullscreen', False)  # Prevent fullscreen
+root.configure(bg="#999999")
+
 app = Application(master=root)
 app.mainloop()
