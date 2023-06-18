@@ -10,8 +10,12 @@ class Application(ttk.Frame):
         self.master = master
         self.master.title("2011Scape - Drop Table Maker by Pixel [Version 1.0]")
 
+        # Load item names from file
+        with open('Item_list.txt', 'r') as f:
+            self.item_names = [line.strip() for line in f]
+
         # Create a canvas within the root window
-        self.canvas = tk.Canvas(root, height=474, width=711, bg='#999999', highlightthickness=0)
+        self.canvas = tk.Canvas(root, width=727, height=474, bg='#999999', highlightthickness=0)
         self.canvas.grid(row=0, column=0)
 
         # Create a vertical scrollbar and associate it with the canvas
@@ -51,9 +55,23 @@ class Application(ttk.Frame):
         frame.grid(row=row_num, columnspan=4)
 
         ttk.Label(frame, text="Item Name").grid(row=row_num, column=0) 
-        name_entry = ttk.Entry(frame)  
-        name_entry.insert(0, "BONES")  # Set the default value to "BONES"
+
+        name_entry = ttk.Combobox(frame, values=self.item_names)
+        name_entry.set("BONES")  # Set the default value
         name_entry.grid(row=row_num, column=1)
+
+        # Add functionality to filter items as the user types
+        def update_combobox(event):
+            # Get the current text in the combobox
+            current_text = name_entry.get()
+
+            # Filter the list of item names
+            filtered_items = [item for item in self.item_names if current_text.lower() in item.lower()]
+
+            # Update the values in the combobox
+            name_entry['values'] = filtered_items
+
+        name_entry.bind('<KeyRelease>', update_combobox)
 
         ttk.Label(frame, text="Quantity").grid(row=row_num, column=2) 
         quantity_entry = ttk.Entry(frame)
@@ -133,7 +151,7 @@ class Application(ttk.Frame):
         f.close()
 
 root = ThemedTk(theme="elegant") 
-root.geometry("729x500")  # Set the window size
+root.geometry("745x500")  # Set the window size
 root.resizable(False, False)  # Prevent resizing of the window
 root.attributes('-fullscreen', False)  # Prevent fullscreen
 root.configure(bg="#999999")
