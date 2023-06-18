@@ -1,3 +1,6 @@
+import sys
+import os
+
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
@@ -10,9 +13,23 @@ class Application(ttk.Frame):
         self.master = master
         self.master.title("2011Scape - Drop Table Maker by Pixel [Version 1.0]")
 
+        # Get the path of the directory containing the executable or the script
+        if getattr(sys, 'frozen', False):
+            # Executable path in PyInstaller
+            base_path = sys._MEIPASS
+        else:
+            # Script path
+            base_path = os.path.dirname(os.path.abspath(__file__))
+
+        # Construct the absolute file path
+        file_path = os.path.join(base_path, "Item_list.txt")
+
         # Load item names from file
-        with open('Item_list.txt', 'r') as f:
-            self.item_names = [line.strip() for line in f]
+        try:
+            with open(file_path, 'r') as f:
+                self.item_names = [line.strip() for line in f]
+        except FileNotFoundError:
+            print("File not found:", file_path)
 
         # Create a canvas within the root window
         self.canvas = tk.Canvas(root, width=727, height=474, bg='#999999', highlightthickness=0)
