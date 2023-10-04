@@ -142,12 +142,20 @@ class Application(ttk.Frame):
             quantity = item[1].get() if item[1].get() != "" else "1"
             probability = item[2].get() if item[2].get() != "" else "1/28"
 
+            # Check if quantity is in range format (e.g., "1-10")
+            if "-" in quantity:
+                range_start, range_end = quantity.split('-')
+                quantity_kotlin = f"{range_start}..{range_end}"
+                quantity_param = f"quantityRange = {quantity_kotlin}"
+            else:
+                quantity_param = f"quantity = {quantity}"
+
             if item[3].get():  # if it is a guaranteed drop
-                guaranteed_code += f'        obj(Items.{name.upper()}, quantity = {quantity})\n'
+                guaranteed_code += f'        obj(Items.{name.upper()}, {quantity_param})\n'
             else:
                 probability = item[2].get()
                 slots = self.calculate_slots(probability)
-                main_code += f'        obj(Items.{name.upper()}, quantity = {quantity}, slots = {slots})\n'
+                main_code += f'        obj(Items.{name.upper()}, {quantity_param}, slots = {slots})\n'
         
         guaranteed_code += '    }\n'
         main_code += '    }\n'
